@@ -9,24 +9,28 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "Docs",
-      href: "/docs",
+      label: "AQI Value Trend",
+      href: "/aqi-value-trend",
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+      label: "Mass Trend of Pollutant Gases",
+      href: "/mass-trend"
     },
     {
-      label: "Blog",
-      href: "/blog",
+      label: "Mass Particulate Matter Trends",
+      href: "/mass-particulate"
     },
     {
-      label: "About",
-      href: "/about",
+      label: "Total Parts of Gases",
+      href: "/total-gases"
     },
     {
-      label: "AQI Value",
-      href: "/aqi",
+      label: "Worst AQI States",
+      href: "/worst-aqi"
+    },
+    {
+      label: "PM Contributors",
+      href: "/pm-contributors"
     }
   ],
   navMenuItems: [
