@@ -8,30 +8,30 @@ export const siteConfig = {
       label: "Home",
       href: "/",
     },
-    {
-      label: "AQI Value Trend",
-      href: "/aqi-value-trend",
-    },
-    {
-      label: "Mass Trend of Pollutant Gases",
-      href: "/mass-trend"
-    },
-    {
-      label: "Mass Particulate Matter Trends",
-      href: "/mass-particulate"
-    },
-    {
-      label: "Total Parts of Gases",
-      href: "/total-gases"
-    },
-    {
-      label: "Worst AQI States",
-      href: "/worst-aqi"
-    },
-    {
-      label: "PM Contributors",
-      href: "/pm-contributors"
-    }
+    // {
+    //   label: "AQI Value Trend",
+    //   href: "/aqi-value-trend",
+    // },
+    // {
+    //   label: "Mass Trend of Pollutant Gases",
+    //   href: "/mass-trend"
+    // },
+    // {
+    //   label: "Mass Particulate Matter Trends",
+    //   href: "/mass-particulate"
+    // },
+    // {
+    //   label: "Total Parts of Gases",
+    //   href: "/total-gases"
+    // },
+    // {
+    //   label: "Worst AQI States",
+    //   href: "/worst-aqi"
+    // },
+    // {
+    //   label: "PM Contributors",
+    //   href: "/pm-contributors"
+    // }
   ],
   navMenuItems: [
     {
@@ -68,10 +68,10 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: "https://github.com/heroui-inc/heroui",
-    twitter: "https://twitter.com/hero_ui",
-    docs: "https://heroui.com",
-    discord: "https://discord.gg/9b6yyZKmH4",
-    sponsor: "https://patreon.com/jrgarciadev",
+    // github: "https://github.com/heroui-inc/heroui",
+    // twitter: "https://twitter.com/hero_ui",
+    // docs: "https://heroui.com",
+    // discord: "https://discord.gg/9b6yyZKmH4",
+    // sponsor: "https://patreon.com/jrgarciadev",
   },
 };
