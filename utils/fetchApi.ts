@@ -51,8 +51,8 @@ export default async function fetchApi(
 
   try {
     const response = await axios(config);
-    
-    return response.data;
+
+    return response.data; 
   } catch (error: any) {
     console.error("💥 Request failed:", {
       url,
