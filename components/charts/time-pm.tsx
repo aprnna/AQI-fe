@@ -79,7 +79,7 @@ export default function TimePM({
               {/* PM2.5 Line */}
               <Line
                 type="monotone"
-                dataKey="NO2 Mean"
+                dataKey="PM10_Mean"
                 stroke="#6366F1"
                 strokeWidth={3}
                 dot={{ r: 3 }}
@@ -89,7 +89,7 @@ export default function TimePM({
               {/* PM10 Line */}
               <Line
                 type="monotone"
-                dataKey="CO Mean"
+                dataKey="PM25_Mean"
                 stroke="#10B981"
                 strokeWidth={3}
                 dot={{ r: 3 }}

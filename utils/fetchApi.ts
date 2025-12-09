@@ -41,8 +41,8 @@ export default async function fetchApi(
     method: method as any,
     url,
     headers,
-    withCredentials: true, // PENTING untuk cookie session!
-    timeout: 10000, // 10 second timeout
+    // withCredentials: true, // PENTING untuk cookie session!
+    // timeout: 10000, // 10 second timeout
   };
 
   if (body) {

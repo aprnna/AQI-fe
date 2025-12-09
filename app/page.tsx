@@ -28,12 +28,26 @@ import {
   useGetContributPM25Mutation,
   useGetContributPM10Mutation,
   useGetContributAQIMutation,
+  useGetMapAQIMutation,
+  useGetAQIRecommendationsMutation,
 } from "@/services/dashboard/mutations";
 import PieGases from "@/components/charts/pie-gases";
 import PiePM10 from "@/components/charts/pie-pm10";
 import PiePM25 from "@/components/charts/pie-pm25";
 import PieAQI from "@/components/charts/pie-AQI";
-import { Input } from "@heroui/input";
+import dynamic from "next/dynamic";
+import AQIMap from "@/components/charts/aqi-map";
+import TestMap from "@/components/charts/test-map";
+import USAQIMapView from "@/components/charts/aqi-map";
+import { Logo } from "@/components/icons";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { ThemeSwitch } from "@/components/theme-switch";
+import Example from "@/components/recomendations";
+import AQIRecommendationsView from "@/components/recomendations";
+
+const TimeAQI2 = dynamic(() => import("../components/charts/time-aqi2"), {
+  ssr: false,
+});
 
 export default function Home() {
   const { data: states, isLoading } = useGetStates();
@@ -46,10 +60,6 @@ export default function Home() {
     start: parseDate("2020-01-01"),
     end: parseDate("2026-12-30"),
   });
-  const [prediksi, setPrediksi] = useState<string>("");
-
-  // DATE FORMATTER
-  const formatter = useDateFormatter({ dateStyle: "long" });
 
   // MUTATIONS (semua chart)
   const timeGasesMutation = useGetTimeGasesMutation();
@@ -66,6 +76,9 @@ export default function Home() {
   const avgPM2Mutation = useGetAVGPM25Mutation();
   const avgPM10Mutation = useGetAVGPM10Mutation();
 
+  const mapAQIMutation = useGetMapAQIMutation();
+  const aqiRecommendationsMutation = useGetAQIRecommendationsMutation();
+
   // DATA STATE PER CHART
   const [dataTimeGases, setDataTimeGases] = useState([]);
   const [dataTimeAQI, setDataTimeAQI] = useState([]);
@@ -81,6 +94,9 @@ export default function Home() {
   const [dataAvgPM2, setDataAvgPM2] = useState<any>();
   const [dataAvgPM10, setDataAvgPM10] = useState<any>();
 
+  const [dataMapAQI, setDataMapAQI] = useState<any>();
+  const [dataAQIRecommendations, setDataAQIRecommendations] = useState<any>();
+
   // APPLY FILTERS TO ALL CHARTS
   function filterDashboard() {
     const start = value.start;
@@ -91,7 +107,6 @@ export default function Home() {
       start_year: start.year.toString(),
       end_year: end.year.toString(),
       states: Array.from(selectedStates) as string[],
-      predict_type: prediksi ? parseInt(prediksi) : undefined,
     };
 
     // TIME GASES
@@ -140,67 +155,95 @@ export default function Home() {
     avgPM10Mutation.mutate(payload, {
       onSuccess: (data) => setDataAvgPM10(data),
     });
+
+    // MAP AQI
+    mapAQIMutation.mutate(payload, {
+      onSuccess: (data) => setDataMapAQI(data),
+    });
+    // AQI RECOMMENDATIONS
+    aqiRecommendationsMutation.mutate(payload, {
+      onSuccess: (data) => setDataAQIRecommendations(data),
+    });
+  }
+
+  function prediksiAQI(years: number) {
+    const start = value.start;
+    const end = value.end;
+    const payload = {
+      start_month: start.month.toString(),
+      end_month: end.month.toString(),
+      start_year: start.year.toString(),
+      end_year: end.year.toString(),
+      states: Array.from(selectedStates) as string[],
+      predict_type: years,
+    };
+    timeAQIMutation.mutate(payload, {
+      onSuccess: (data) => setDataTimeAQI(data),
+    });
   }
 
   useEffect(() => {
     filterDashboard();
-    console.log(dataSumGases);
   }, []);
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
-      <div className="col-span-4">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-2xl p-6">
-          <h2 className="text-lg font-semibold mb-4">Filters</h2>
+      <Card className="col-span-4 p-4 rounded-3xl border gap-10 border-white/20 dark:border-white/5 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300">
+        <CardTitle className="flex items-center gap-3">
+          <Logo />
+          <h2 className="text-lg font-semibold">Air Quality Index Dashboard</h2>
+          <ThemeSwitch className="ml-auto" />
+        </CardTitle>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* DATE RANGE */}
-            <div>
-              <DateRangePicker
-                label="Date range"
-                aria-label="Date range"
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-
-            {/* STATE SELECT */}
-            <div>
-              <Select
-                className="w-full"
-                label="Select states"
-                aria-label="select states"
-                placeholder="Choose states"
-                selectionMode="multiple"
-                selectedKeys={selectedStates}
-                isLoading={isLoading}
-                onSelectionChange={setSelectedStates}
-              >
-                {states?.map((state: any) => (
-                  <SelectItem key={state}>{state}</SelectItem>
-                ))}
-              </Select>
-            </div>
-            <Input
-              className="w-full"
-              label="Prediksi Berapa Tahun ke Depan"
-              type="number"
-              aria-label="prediksi value"
-              value={prediksi}
-              onChange={(e) => setPrediksi(e.target.value)}
-              placeholder="Masukkan jumlah tahun"
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* DATE RANGE */}
+          <div>
+            <DateRangePicker
+              label="Date range"
+              aria-label="Date range"
+              value={value}
+              onChange={setValue}
             />
           </div>
 
-          {/* ACTION BUTTON */}
-          <div className="flex justify-end mt-6">
-            <Button onPress={filterDashboard} color="primary">
-              Apply Filters
-            </Button>
+          {/* STATE SELECT */}
+          <div>
+            <Select
+              className="w-full"
+              label="Select states"
+              aria-label="select states"
+              placeholder="Choose states"
+              selectionMode="multiple"
+              selectedKeys={selectedStates}
+              isLoading={isLoading}
+              onSelectionChange={setSelectedStates}
+            >
+              {states?.map((state: any) => (
+                <SelectItem key={state}>{state}</SelectItem>
+              ))}
+            </Select>
           </div>
-        </div>
-      </div>
+        </CardContent>
 
+        {/* ACTION BUTTON */}
+        <CardFooter className="flex justify-end mt-6">
+          <Button onPress={filterDashboard} color="primary">
+            Apply Filters
+          </Button>
+        </CardFooter>
+      </Card>
+
+      {/* MAP AQI */}
+      <USAQIMapView
+        className="col-span-4"
+        data={dataMapAQI}
+        isLoading={mapAQIMutation.isPending}
+      />
+      <AQIRecommendationsView
+        data={dataAQIRecommendations}
+        isLoading={aqiRecommendationsMutation.isPending}
+        className="col-span-4"
+      />
       {/* ALL CHARTS */}
       <SumGases
         data={dataSumGases?.Sum}
@@ -215,18 +258,17 @@ export default function Home() {
       <PiePM25 data={dataPiePM25} isLoading={piePM25Mutation.isPending} />
       <PieAQI data={dataPieAQI} isLoading={pieAQIMutation.isPending} />
 
+      <TimeAQI2
+        className="col-span-4"
+        prediksiAQI={prediksiAQI}
+        data={dataTimeAQI}
+        isLoading={timeAQIMutation.isPending}
+      />
       <TimeGases
         className="col-span-2"
         data={dataTimeGases}
         isLoading={timeGasesMutation.isPending}
       />
-
-      <TimeAQI
-        className="col-span-2"
-        data={dataTimeAQI}
-        isLoading={timeAQIMutation.isPending}
-      />
-
       <TimePM
         className="col-span-2"
         data={dataTimePM}

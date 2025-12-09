@@ -122,3 +122,13 @@ export const useGetTimeAQIMutation = () => {
     }
   });
 }
+
+export const useGetAQIRecommendationsMutation = () => {
+  return useMutation({
+    mutationFn: async (filter: FilterData) => {
+      const response = await fetchApi("/api/recommendations", "POST", filter);
+      if (!response.data) throw new Error("Failed to fetch AQI recommendations data");
+      return response.data;
+    }
+  });
+}

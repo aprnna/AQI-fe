@@ -10,6 +10,7 @@
     "lint": "eslint --fix"
   },
   "dependencies": {
+    "@eslint/compat": "^2.0.0",
     "@heroui/accordion": "2.2.24",
     "@heroui/alert": "2.2.27",
     "@heroui/autocomplete": "2.3.29",
@@ -58,6 +59,7 @@
     "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "d3-scale": "^4.0.2",
     "framer-motion": "11.18.2",
     "intl-messageformat": "10.7.16",
     "lucide-react": "^0.554.0",
@@ -65,6 +67,7 @@
     "next-themes": "0.4.6",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-simple-maps": "^3.0.0",
     "recharts": "^2.15.4",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7"
@@ -77,6 +80,7 @@
     "@types/node": "20.5.7",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
+    "@types/react-simple-maps": "^3.0.6",
     "@typescript-eslint/eslint-plugin": "8.34.1",
     "@typescript-eslint/parser": "8.34.1",
     "eslint": "9.25.1",
