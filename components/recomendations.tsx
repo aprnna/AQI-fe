@@ -46,11 +46,11 @@ const AQIRecommendations: React.FC<AQIRecommendationsProps> = ({
           <Card key={i} className="w-full">
             <CardBody className="gap-4">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-default-200 rounded-lg animate-pulse"></div>
+                <div className="w-12 h-12 bg-default-200 rounded-lg animate-pulse" />
                 <div className="flex-1 space-y-3">
-                  <div className="h-6 bg-default-200 rounded-lg w-3/4 animate-pulse"></div>
-                  <div className="h-4 bg-default-100 rounded-lg w-full animate-pulse"></div>
-                  <div className="h-4 bg-default-100 rounded-lg w-5/6 animate-pulse"></div>
+                  <div className="h-6 bg-default-200 rounded-lg w-3/4 animate-pulse" />
+                  <div className="h-4 bg-default-100 rounded-lg w-full animate-pulse" />
+                  <div className="h-4 bg-default-100 rounded-lg w-5/6 animate-pulse" />
                 </div>
               </div>
             </CardBody>
@@ -70,9 +70,11 @@ const AQIRecommendations: React.FC<AQIRecommendationsProps> = ({
             variant="flat"
             color="default"
             size="lg"
+            className="h-full"
+            classNames={{ content: "w-full h-full max-w-full text-wrap" }}
           >
-            <span className="font-semibold">Analisis berdasarkan:</span>
-            <span className="ml-2 text-default-600">{contextUsed}</span>
+            <span className="font-semibold w-full">Analisis berdasarkan:</span>
+            <span className="ml-2 text-default-600 w-full">{contextUsed}</span>
           </Chip>
         </div>
       )}
@@ -142,40 +144,6 @@ const AQIRecommendations: React.FC<AQIRecommendationsProps> = ({
           </div>
         </CardBody>
       </Card>
-
-      {/* Stats Cards */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-        <Card shadow="sm">
-          <CardBody className="text-center py-6">
-            <div className="text-4xl mb-3">💡</div>
-            <h3 className="font-bold text-lg mb-2">Berbasis Data</h3>
-            <p className="text-sm text-default-600">
-              Rekomendasi dihasilkan dari analisis mendalam data AQI real-time
-            </p>
-          </CardBody>
-        </Card>
-
-        <Card shadow="sm">
-          <CardBody className="text-center py-6">
-            <div className="text-4xl mb-3">🎯</div>
-            <h3 className="font-bold text-lg mb-2">Actionable</h3>
-            <p className="text-sm text-default-600">
-              Setiap rekomendasi dapat langsung diterapkan oleh pemangku
-              kepentingan
-            </p>
-          </CardBody>
-        </Card>
-
-        <Card shadow="sm">
-          <CardBody className="text-center py-6">
-            <div className="text-4xl mb-3">🤝</div>
-            <h3 className="font-bold text-lg mb-2">Kolaboratif</h3>
-            <p className="text-sm text-default-600">
-              Melibatkan peran aktif pemerintah, industri, dan masyarakat
-            </p>
-          </CardBody>
-        </Card> */}
-      {/* </div> */}
     </div>
   );
 };

@@ -14,6 +14,7 @@ import SumGases from "@/components/charts/sum-gases";
 import AvgAQI from "@/components/charts/avg-aqi";
 import AvgPM2 from "@/components/charts/avg-pm2";
 import AvgPM10 from "@/components/charts/avg-pm10";
+import { Tabs, Tab } from "@heroui/tabs";
 
 import { useGetStates } from "@/services/dashboard/queries";
 import {
@@ -164,6 +165,38 @@ export default function Home() {
     aqiRecommendationsMutation.mutate(payload, {
       onSuccess: (data) => setDataAQIRecommendations(data),
     });
+
+    setDataAQIRecommendations({
+      context_used:
+        "AQI, PM2.5, PM10, NO2, SO2, CO, O3 dari tahun 2020 hingga 2026 di negara bagian terpilih. sadsadasd sadsd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd",
+      response: [
+        {
+          Title: "Tingkatkan Ruang Hijau di Area Perkotaan",
+          Description:
+            "Menanam lebih banyak pohon dan menciptakan taman dapat membantu menyerap polutan udara dan meningkatkan kualitas udara secara keseluruhan.",
+        },
+        {
+          Title: "Promosikan Penggunaan Transportasi Ramah Lingkungan",
+          Description:
+            "Mendorong penggunaan kendaraan listrik, transportasi umum, bersepeda, dan berjalan kaki untuk mengurangi emisi dari kendaraan bermotor.",
+        },
+        {
+          Title: "Tingkatkan Pengelolaan Limbah Industri",
+          Description:
+            "Memastikan bahwa pabrik dan industri mematuhi regulasi lingkungan dan menggunakan teknologi bersih untuk mengurangi emisi polutan.",
+        },
+        {
+          Title: "Edukasi Masyarakat tentang Polusi Udara",
+          Description:
+            "Mengadakan kampanye kesadaran untuk menginformasikan masyarakat tentang dampak polusi udara dan cara-cara untuk menguranginya.",
+        },
+        {
+          Title: "Pantau Kualitas Udara Secara Berkala",
+          Description:
+            "Menggunakan sensor kualitas udara untuk memantau tingkat polusi secara real-time dan mengambil tindakan cepat jika terjadi peningkatan polutan.",
+        },
+      ],
+    });
   }
 
   function prediksiAQI(years: number) {
@@ -177,6 +210,7 @@ export default function Home() {
       states: Array.from(selectedStates) as string[],
       predict_type: years,
     };
+
     timeAQIMutation.mutate(payload, {
       onSuccess: (data) => setDataTimeAQI(data),
     });
@@ -187,7 +221,7 @@ export default function Home() {
   }, []);
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+    <section className="gap-6 p-4">
       <Card className="col-span-4 p-4 rounded-3xl border gap-10 border-white/20 dark:border-white/5 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300">
         <CardTitle className="flex items-center gap-3">
           <Logo />
@@ -232,48 +266,69 @@ export default function Home() {
           </Button>
         </CardFooter>
       </Card>
+      <Tabs className="col-span-4 mt-6" aria-label="AQI Dashboard Tabs">
+        {/* TAB 1: OVERVIEW */}
+        <Tab key="overview" title="Overview">
+          <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <SumGases
+                data={dataSumGases?.Sum}
+                isLoading={sumGasesMutation.isPending}
+              />
+              <AvgAQI
+                data={dataAvgAQI?.Mean}
+                isLoading={avgAQIMutation.isPending}
+              />
+              <AvgPM2
+                data={dataAvgPM2?.Mean}
+                isLoading={avgPM2Mutation.isPending}
+              />
+              <AvgPM10
+                data={dataAvgPM10?.Mean}
+                isLoading={avgPM10Mutation.isPending}
+              />
+            </div>
+            <USAQIMapView
+              data={dataMapAQI}
+              isLoading={mapAQIMutation.isPending}
+            />
+            <AQIRecommendationsView
+              data={dataAQIRecommendations}
+              isLoading={aqiRecommendationsMutation.isPending}
+            />
+          </div>
+        </Tab>
 
-      {/* MAP AQI */}
-      <USAQIMapView
-        className="col-span-4"
-        data={dataMapAQI}
-        isLoading={mapAQIMutation.isPending}
-      />
-      <AQIRecommendationsView
-        data={dataAQIRecommendations}
-        isLoading={aqiRecommendationsMutation.isPending}
-        className="col-span-4"
-      />
-      {/* ALL CHARTS */}
-      <SumGases
-        data={dataSumGases?.Sum}
-        isLoading={sumGasesMutation.isPending}
-      />
-      <AvgAQI data={dataAvgAQI?.Mean} isLoading={avgAQIMutation.isPending} />
-      <AvgPM2 data={dataAvgPM2?.Mean} isLoading={avgPM2Mutation.isPending} />
-      <AvgPM10 data={dataAvgPM10?.Mean} isLoading={avgPM10Mutation.isPending} />
+        {/* TAB 2: CONTRIBUTION (PIE CHART) */}
+        <Tab key="contributors" title="Contributors">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <PieGases
+              data={dataPieGases}
+              isLoading={pieGasesMutation.isPending}
+            />
+            <PiePM10 data={dataPiePM10} isLoading={piePM10Mutation.isPending} />
+            <PiePM25 data={dataPiePM25} isLoading={piePM25Mutation.isPending} />
+            <PieAQI data={dataPieAQI} isLoading={pieAQIMutation.isPending} />
+          </div>
+        </Tab>
 
-      <PieGases data={dataPieGases} isLoading={pieGasesMutation.isPending} />
-      <PiePM10 data={dataPiePM10} isLoading={piePM10Mutation.isPending} />
-      <PiePM25 data={dataPiePM25} isLoading={piePM25Mutation.isPending} />
-      <PieAQI data={dataPieAQI} isLoading={pieAQIMutation.isPending} />
-
-      <TimeAQI2
-        className="col-span-4"
-        prediksiAQI={prediksiAQI}
-        data={dataTimeAQI}
-        isLoading={timeAQIMutation.isPending}
-      />
-      <TimeGases
-        className="col-span-2"
-        data={dataTimeGases}
-        isLoading={timeGasesMutation.isPending}
-      />
-      <TimePM
-        className="col-span-2"
-        data={dataTimePM}
-        isLoading={timePMMutation.isPending}
-      />
+        {/* TAB 3: TIME SERIES */}
+        <Tab key="timeseries" title="Time Series">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TimeAQI2
+              className="col-span-2"
+              prediksiAQI={prediksiAQI}
+              data={dataTimeAQI}
+              isLoading={timeAQIMutation.isPending}
+            />
+            <TimeGases
+              data={dataTimeGases}
+              isLoading={timeGasesMutation.isPending}
+            />
+            <TimePM data={dataTimePM} isLoading={timePMMutation.isPending} />
+          </div>
+        </Tab>
+      </Tabs>
     </section>
   );
 }
