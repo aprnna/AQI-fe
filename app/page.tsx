@@ -225,7 +225,7 @@ export default function Home() {
       <Card className="col-span-4 p-4 rounded-3xl border gap-10 border-white/20 dark:border-white/5 bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300">
         <CardTitle className="flex items-center gap-3">
           <Logo />
-          <h2 className="text-lg font-semibold">Air Quality Index Dashboard</h2>
+          <h2 className="text-lg font-semibold">Air Quality Index Dashboard Mantap</h2>
           <ThemeSwitch className="ml-auto" />
         </CardTitle>
 
