@@ -3,10 +3,12 @@ import DashboardItem from "../dashboard-item";
 
 export default function AvgAQI({
   data,
+  previousData,
   isLoading = true,
   className = "",
 }: {
   data: any;
+  previousData?: number;
   isLoading?: boolean;
   className?: string;
 }) {
@@ -15,8 +17,12 @@ export default function AvgAQI({
       className={className}
       isLoading={isLoading}
       IconClass="mdi:cloud"
-      description="AQI Level"
+      description="Average AQI"
       value={data}
+      previousValue={previousData}
+      metricType="aqi"
+      showTrend={true}
+      showStatus={true}
     />
   );
 }

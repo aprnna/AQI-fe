@@ -21,7 +21,7 @@ export const useGetAVGAQIMutation = () => {
       return response.data;
     }
   });
-} 
+}
 
 export const useGetAVGPM25Mutation = () => {
   return useMutation({
@@ -45,7 +45,7 @@ export const useGetAVGPM10Mutation = () => {
 
 export const useGetMapAQIMutation = () => {
   return useMutation({
-    mutationFn: async (filter: FilterData) => { 
+    mutationFn: async (filter: FilterData) => {
       const response = await fetchApi("/api/map_aqi", "POST", filter);
       if (!response.data) throw new Error("Failed to fetch map AQI data");
       return response.data;
@@ -64,7 +64,7 @@ export const useGetContributGasesMutation = () => {
 }
 
 export const useGetContributAQIMutation = () => {
-  return useMutation({  
+  return useMutation({
     mutationFn: async (filter: FilterData) => {
       const response = await fetchApi("/api/prec_aqi", "POST", filter);
       if (!response.data) throw new Error("Failed to fetch predicted AQI data");
@@ -101,7 +101,7 @@ export const useGetTimeGasesMutation = () => {
       return response.data;
     }
   });
-} 
+}
 
 export const useGetTimePMMutation = () => {
   return useMutation({
@@ -128,6 +128,28 @@ export const useGetAQIRecommendationsMutation = () => {
     mutationFn: async (filter: FilterData) => {
       const response = await fetchApi("/api/recommendations", "POST", filter);
       if (!response.data) throw new Error("Failed to fetch AQI recommendations data");
+      return response.data;
+    }
+  });
+}
+
+// Year-over-Year Comparison
+export const useGetYoYComparisonMutation = () => {
+  return useMutation({
+    mutationFn: async (payload: { states: string[] }) => {
+      const response = await fetchApi("/api/yoy_comparison", "POST", payload);
+      if (!response.data) throw new Error("Failed to fetch YoY comparison data");
+      return response.data;
+    }
+  });
+}
+
+// Time Series Recommendations (for predictions)
+export const useGetTimeSeriesRecommendationsMutation = () => {
+  return useMutation({
+    mutationFn: async (filter: FilterData) => {
+      const response = await fetchApi("/api/recommendations_time_series", "POST", filter);
+      if (!response.data) throw new Error("Failed to fetch time series recommendations data");
       return response.data;
     }
   });

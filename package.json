@@ -60,8 +60,11 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "d3-scale": "^4.0.2",
+    "dom-to-image-more": "^3.7.2",
     "framer-motion": "11.18.2",
+    "html2canvas": "^1.4.1",
     "intl-messageformat": "10.7.16",
+    "jspdf": "^3.0.4",
     "lucide-react": "^0.554.0",
     "next": "15.3.1",
     "next-themes": "0.4.6",
@@ -70,7 +73,8 @@
     "react-simple-maps": "^3.0.0",
     "recharts": "^2.15.4",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@iconify/react": "^6.0.2",

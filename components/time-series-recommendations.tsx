@@ -1,62 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import clsx from "clsx";
 
-interface Recommendation {
+interface TimeSeriesRecommendation {
   Title: string;
   Description: string;
-  Category: string;
 }
 
-interface AQIRecommendationsProps {
+interface TimeSeriesRecommendationsProps {
   contextUsed?: string;
-  recommendations: Recommendation[];
+  recommendations: TimeSeriesRecommendation[];
   isLoading?: boolean;
 }
 
-// Icon mapping berdasarkan category
-const categoryIconMap: Record<string, string> = {
-  health: "🏥",
-  outdoor: "🏃",
-  transportation: "🚌",
-  policy: "🏛️",
-  environment: "🌳",
-};
-
-// Color mapping berdasarkan category
-const categoryColorMap: Record<
-  string,
-  "success" | "primary" | "secondary" | "warning" | "danger"
-> = {
-  health: "danger",
-  outdoor: "primary",
-  transportation: "warning",
-  policy: "secondary",
-  environment: "success",
-};
-
-// Label mapping untuk category
-const categoryLabelMap: Record<string, string> = {
-  health: "Kesehatan",
-  outdoor: "Aktivitas Luar",
-  transportation: "Transportasi",
-  policy: "Kebijakan",
-  environment: "Lingkungan",
-};
-
-const AQIRecommendations: React.FC<AQIRecommendationsProps> = ({
+const TimeSeriesRecommendations: React.FC<TimeSeriesRecommendationsProps> = ({
   contextUsed,
   recommendations,
   isLoading = false,
 }) => {
   if (isLoading) {
     return (
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[1, 2, 3, 4].map((i) => (
+      <div className="w-full grid grid-cols-1 gap-4">
+        {[1, 2].map((i) => (
           <Card key={i} className="w-full">
             <CardBody className="gap-4">
               <div className="flex items-start gap-4">
@@ -74,32 +43,34 @@ const AQIRecommendations: React.FC<AQIRecommendationsProps> = ({
     );
   }
 
+  if (!recommendations || recommendations.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-4">
       {/* Context Badge */}
       {contextUsed && (
         <div className="flex items-center gap-2">
           <Chip
-            startContent={<span className="text-lg">📊</span>}
+            startContent={<span className="text-lg">🔮</span>}
             variant="flat"
-            color="default"
+            color="secondary"
             size="lg"
             className="h-full"
             classNames={{ content: "w-full h-full max-w-full text-wrap" }}
           >
-            <span className="font-semibold w-full">Analisis berdasarkan:</span>
+            <span className="font-semibold w-full">Berdasarkan:</span>
             <span className="ml-2 text-default-600 w-full">{contextUsed}</span>
           </Chip>
         </div>
       )}
 
-      {/* Recommendations Grid with Accordion */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Recommendations List */}
+      <div className="grid grid-cols-1 gap-4">
         {recommendations.map((rec, index) => {
-          const category = rec.Category?.toLowerCase() || "health";
-          const icon = categoryIconMap[category] || "💡";
-          const color = categoryColorMap[category] || "primary";
-          const label = categoryLabelMap[category] || "Rekomendasi";
+          const icons = ["📊", "💡"];
+          const colors: ("primary" | "secondary")[] = ["primary", "secondary"];
 
           return (
             <Card key={index} className="w-full h-fit" shadow="sm">
@@ -121,15 +92,15 @@ const AQIRecommendations: React.FC<AQIRecommendationsProps> = ({
                     startContent={
                       <div className="flex items-center gap-3">
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-default-100 text-xl">
-                          {icon}
+                          {icons[index % 2]}
                         </div>
                       </div>
                     }
                     title={
                       <div className="flex flex-col gap-2">
                         <span className="font-bold text-base">{rec.Title}</span>
-                        <Chip size="sm" color={color} variant="flat">
-                          {label}
+                        <Chip size="sm" color={colors[index % 2]} variant="flat">
+                          Rekomendasi Prediksi {index + 1}
                         </Chip>
                       </div>
                     }
@@ -144,29 +115,12 @@ const AQIRecommendations: React.FC<AQIRecommendationsProps> = ({
           );
         })}
       </div>
-
-      {/* Info Card */}
-      <Card className="bg-primary-50 border-l-4 border-primary">
-        <CardBody>
-          <div className="flex items-start gap-3">
-            <div className="text-2xl">ℹ️</div>
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-primary-900 mb-1">
-                Rekomendasi ini dihasilkan berdasarkan analisis data AQI
-              </p>
-              <p className="text-sm text-primary-700">
-                Klik pada setiap kartu untuk melihat detail lengkap rekomendasi
-              </p>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
     </div>
   );
 };
 
-// CONTOH PENGGUNAAN
-export default function AQIRecommendationsView({
+// Main View Component
+export default function TimeSeriesRecommendationsView({
   data,
   isLoading,
   className,
@@ -175,6 +129,10 @@ export default function AQIRecommendationsView({
   isLoading: boolean;
   className?: string;
 }) {
+  if (!data && !isLoading) {
+    return null;
+  }
+
   return (
     <Card
       className={clsx(
@@ -183,15 +141,14 @@ export default function AQIRecommendationsView({
       )}
     >
       <CardHeader className="flex flex-col gap-2">
-        <h1 className="text-4xl font-bold mb-3">Rekomendasi Kualitas Udara</h1>
-        <p className="text-lg text-default-600">
-          Langkah-langkah yang dapat diambil untuk mempertahankan dan
-          meningkatkan kualitas udara
+        <h1 className="text-2xl font-bold mb-2">🔮 Rekomendasi Aksi Prediksi</h1>
+        <p className="text-sm text-default-600">
+          Langkah-langkah yang dapat diambil stakeholder berdasarkan hasil prediksi kualitas udara
         </p>
       </CardHeader>
 
       {/* Recommendations Component */}
-      <AQIRecommendations
+      <TimeSeriesRecommendations
         contextUsed={data?.context_used}
         recommendations={data?.response || []}
         isLoading={isLoading}
